@@ -11,6 +11,12 @@ Tile.y = 0
 Tile.cellsize = 20
 Tile.color = {255, 255, 255, 255}
 
+--[[
+constructor of Tile.
+
+x, location on x-axis of the upper left hand corner of the tile
+y, location on y-axis of the upper left hand corner of the tile
+]]
 function Tile:init(x, y, c)
   self.x = x or self.x
   self.y = y or self.y

@@ -27,6 +27,14 @@ function Workspace:init(w, h, c)
   self.tiles = {} 
 end
 
+--[[
+
+creates a graph paper backround for creating the level
+w, width in number cells
+h, height in number cells
+c, size of cells
+
+]]
 function Workspace:initializeGrid(w, h, c)
   local lines = {}
   for i = 0, w do
@@ -53,11 +61,27 @@ function Workspace:initializeGrid(w, h, c)
   return lines
 end
 
+--[[
+
+adds tile to the workspace at the given coordinates
+x, location on x-axis
+y, location on y-axis
+]]
 function Workspace:addTile(x, y)
   local tile = Tile(x, y)
   table.insert(self.tiles, tile)
 end
 
+--[[
+
+checks to see if a point is contained in one of the tiles.
+
+If the point is contained in one of the tiles, then that tile is returned.
+if not, nil is returned.
+
+x, location of point in x-axis
+y, location of point in y-axis
+]]
 function Workspace:checkTiles(x, y)
   local tileClicked = nil
   for k, v in pairs(self.tiles) do
@@ -69,6 +93,10 @@ function Workspace:checkTiles(x, y)
   return tileClicked
 end
 
+--[[
+
+draws the graph paper backgound and all the tiles.
+]]
 function Workspace:draw()
   tr, tg, tb, ta = love.graphics.getColor()
   love.graphics.setColor(0,0,128)
