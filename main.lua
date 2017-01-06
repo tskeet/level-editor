@@ -52,13 +52,18 @@ end
 
 function love.mousepressed(x, y, button, istouch)
   mouseX, mouseY = camera:mapToWorld(x, y)
-  print("x = " .. x .. " y = " .. y .. "\n mouseX = " .. mouseX .. " mouseY = " .. mouseY)
   local testTile = workspace:checkTiles(mouseX, mouseY)
   if testTile == nil then
     workspace:addTile(mouseX, mouseY)
   else
     testTile:onClick()
   end	
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+  local tx, ty = camera:mapToWorld(x, y)
+  tx, ty = workspace:mapToGraph(tx, ty)
+  workspace:setCursor(tx, ty)
 end
 
 function love.update(dt)

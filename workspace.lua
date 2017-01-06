@@ -1,6 +1,5 @@
 --[[
 Class Workspace is the main workspace where the level is created.
-
 ]]
 Workspace = class()
 
@@ -9,9 +8,9 @@ Workspace.height = 10
 Workspace.cellsize = 20
 Workspace.lines = nil
 Workspace.tiles = nil
+Workspace.squareCursor = {x = 0, y = 0}
 
 --[[
-
 Constructor of Workspace
   w, width in number of cells 
   h. height in number of cells
@@ -28,7 +27,6 @@ function Workspace:init(w, h, c)
 end
 
 --[[
-
 creates a graph paper backround for creating the level
 w, width in number cells
 h, height in number cells
@@ -61,21 +59,20 @@ function Workspace:initializeGrid(w, h, c)
   return lines
 end
 
---[[
 
+
+--[[
 adds tile to the workspace at the given coordinates
 x, location on x-axis
 y, location on y-axis
 ]]
 function Workspace:addTile(x, y)
-  local tile = Tile(x, y)
+  local tile = Tile(self.squareCursor.x, self.squareCursor.y)
   table.insert(self.tiles, tile)
 end
 
 --[[
-
 checks to see if a point is contained in one of the tiles.
-
 If the point is contained in one of the tiles, then that tile is returned.
 if not, nil is returned.
 
@@ -94,19 +91,37 @@ function Workspace:checkTiles(x, y)
 end
 
 --[[
+  maps a point from the worldspace onto an intersection of the graph paper
+  x, location of point on x-axis
+  y, location of point on y-axis
+  returns mapped point 
+]]
+function Workspace:mapToGraph(x, y)
+  --print("x to graph: " .. x .. " y to graph: " .. y)
+  return math.floor( x / self.cellsize) * self.cellsize, math.floor( y / self.cellsize) * self.cellsize
+end
 
-draws the graph paper backgound and all the tiles.
+--[[
+  Sets the location of the upper left hand corner of the cursor
+]]
+function Workspace:setCursor(x, y)
+  self.squareCursor.x, self.squareCursor.y = x, y
+end 
+--[[
+  draws the graph paper backgound and all the tiles.
 ]]
 function Workspace:draw()
-  tr, tg, tb, ta = love.graphics.getColor()
-  love.graphics.setColor(0,0,128)
 
+  --setting color and drawing graph lines on workspace
+  love.graphics.setColor(0,0,128)
   for k, v in pairs(self.lines) do
     love.graphics.line(v)
   end
-  love.graphics.setColor(tr, tg, tb, ta)
 
   for k, v in pairs(self.tiles) do
     v:draw()
   end
+
+  love.graphics.setColor(173, 216, 230, 255)
+  love.graphics.rectangle('line', self.squareCursor.x, self.squareCursor.y, self.cellsize, self.cellsize)
 end
