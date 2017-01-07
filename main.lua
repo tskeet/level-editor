@@ -4,20 +4,22 @@ require 'workspace'
 require 'tile'
 
 function love.load()
-  w, h = love.graphics.getDimensions()
-  camera = Camera(0, 0, w, h)
+  --w, h = love.graphics.getDimensions()
+  --camera = Camera(0, 0, w, h)
+
+  --workspace = Workspace()
+  
+  --cameraX = 0
+  --cameraY = 0
+  --cameraScale = 1
+
+  --mouseX = 0
+  --mouseY = 0
 
   workspace = Workspace()
-  
-  cameraX = 0
-  cameraY = 0
-  cameraScale = 1
-
-  mouseX = 0
-  mouseY = 0
 end
 
-function love.keypressed(key)
+--[[function love.keypressed(key)
   if key == 'up' then
     cameraY = 5
   end
@@ -64,17 +66,18 @@ function love.mousemoved(x, y, dx, dy, istouch)
   local tx, ty = camera:mapToWorld(x, y)
   tx, ty = workspace:mapToGraph(tx, ty)
   workspace:setCursor(tx, ty)
-end
+end]]
 
 function love.update(dt)
-  camera:move(cameraX, cameraY)
-  camera:setScale(cameraScale)
+  --camera:move(cameraX, cameraY)
+  --camera:setScale(cameraScale)
+  workspace:update(dt)
 end
 
 function love.draw()
-  camera:set()
+  --camera:set()
   workspace:draw()
-  local tx, ty, txp, typ = camera:getState()
-  love.graphics.circle('line', mouseX, mouseY, 10)
-  camera:unset()
+  --local tx, ty, txp, typ = camera:getState()
+  --love.graphics.circle('line', mouseX, mouseY, 10)
+  --camera:unset()
 end
