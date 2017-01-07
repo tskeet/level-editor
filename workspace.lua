@@ -73,10 +73,10 @@ adds tile to the workspace at the given coordinates
 x, location on x-axis
 y, location on y-axis
 ]]
-function Workspace:addTile()
+--[[function Workspace:addTile()
   local tile = Tile(self.squareCursor.x, self.squareCursor.y)
   table.insert(self.tiles, tile)
-end
+end]]
 
 --[[
 checks to see if a point is contained in one of the tiles.
@@ -139,31 +139,47 @@ end
 ]]
 
 function Workspace:checkMouse()
-  local tx, ty = love.mouse.getPosition()
-  tx, ty = self.camera:mapToWorld(tx, ty)
-  tx, ty = self:mapToGraph(tx, ty)
+  local mx, my = love.mouse.getPosition()
+  mx, my = self.camera:mapToWorld(mx, my)
+  local tx, ty = self:mapToGraph(mx, my)
   self:setCursor(tx, ty)
 
   if love.mouse.isDown(1) then --if left mouse button is pressed
-    if self.isDrag == false then -- if mouse entered pressed
-      if self.selectedTile == nil then -- if selected is nil,
-        self.selectedTile = self:checkTiles(tx, ty) -- check to see to if tile is at point
-        if self.selectedTile ~= nil then --checking to see if space is occupied by tile
-          self.selectedTile:onClick()
-        else
-          self:addTile()
-        end
-      end
+    --self:mouseEnter(mx, my)
+    if self.isDrag == true then
+      self:mouseDrag()
+    else
       self.isDrag = true
-    else --mouse is dragging
-      if self.selectedTile ~= nil then
-        self.selectedTile:setPosition(tx, ty)
-      end
+      self:mouseEnter(mx, my)
     end
   else
-    if self.isDrag == true then --exiting drag
+    if self.isDrag == true then
       self.isDrag = false
+      self:mouseExit(mx, my)
     end
+  end
+end
+
+function Workspace:mouseEnter(x, y)
+  self.selectedTile = self:checkTiles(x, y)
+  if self.selectedTile == nil then
+    self.selectedTile = Tile(self.squareCursor.x, self.squareCursor.y)
+  end
+end
+
+function Workspace:mouseExit(x, y)
+  if self.selectedTile ~= nil then
+    local testTile = self:checkTiles(x, y)
+    if testTile == nil then
+      table.insert(self.tiles, self.selectedTile)
+    end
+    self.selectedTile:setPosition(self.squareCursor.x, self.squareCursor.y)
+  end
+end
+
+function Workspace:mouseDrag(x, y)
+  if self.selectedTile ~= nil then
+    self.selectedTile:setPosition(self.squareCursor.x, self.squareCursor.y)
   end
 end
 
@@ -188,6 +204,10 @@ function Workspace:draw()
 
   for k, v in pairs(self.tiles) do
     v:draw()
+  end
+
+  if self.selectedTile ~= nil then
+    self.selectedTile:draw()
   end
 
   love.graphics.setColor(173, 216, 230, 255)

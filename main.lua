@@ -16,7 +16,7 @@ function love.load()
   --mouseX = 0
   --mouseY = 0
 
-  workspace = Workspace()
+  workspace = Workspace(50)
 end
 
 --[[function love.keypressed(key)
