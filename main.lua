@@ -16,7 +16,7 @@ function love.load()
   --mouseX = 0
   --mouseY = 0
 
-  workspace = Workspace(50)
+  workspace = Workspace(20, 20, 40)
 end
 
 --[[function love.keypressed(key)
@@ -60,13 +60,11 @@ function love.mousepressed(x, y, button, istouch)
   else
     testTile:onClick()
   end	
-end
-
-function love.mousemoved(x, y, dx, dy, istouch)
-  local tx, ty = camera:mapToWorld(x, y)
-  tx, ty = workspace:mapToGraph(tx, ty)
-  workspace:setCursor(tx, ty)
 end]]
+
+function love.wheelmoved(x, y, dx, dy, istouch)
+  workspace:wheelmoved(x,y)
+end
 
 function love.update(dt)
   --camera:move(cameraX, cameraY)

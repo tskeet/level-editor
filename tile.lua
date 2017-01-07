@@ -21,6 +21,8 @@ function Tile:init(x, y, c)
   self.x = x or self.x
   self.y = y or self.y
   self.cellsize = c or self.cellsize
+
+  print("old c is " .. c)
 end
 
 --[[

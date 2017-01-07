@@ -163,7 +163,7 @@ end
 function Workspace:mouseEnter(x, y)
   self.selectedTile = self:checkTiles(x, y)
   if self.selectedTile == nil then
-    self.selectedTile = Tile(self.squareCursor.x, self.squareCursor.y)
+    self.selectedTile = Tile(self.squareCursor.x, self.squareCursor.y, self.cellsize)
   end
 end
 
@@ -189,6 +189,14 @@ end
 function Workspace:update(dt)
   self:checkKeyboard()
   self:checkMouse()
+end
+
+function Workspace:wheelmoved(x, y)
+  if y < 0 then
+    self.camera:setScale(1.1)
+  else
+    self.camera:setScale(0.9)
+  end
 end
  
 --[[
