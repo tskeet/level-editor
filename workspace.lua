@@ -66,18 +66,6 @@ function Workspace:initializeGrid(w, h, c)
   return lines
 end
 
-
-
---[[
-adds tile to the workspace at the given coordinates
-x, location on x-axis
-y, location on y-axis
-]]
---[[function Workspace:addTile()
-  local tile = Tile(self.squareCursor.x, self.squareCursor.y)
-  table.insert(self.tiles, tile)
-end]]
-
 --[[
 checks to see if a point is contained in one of the tiles.
 If the point is contained in one of the tiles, then that tile is returned.
@@ -104,7 +92,6 @@ end
   returns mapped point 
 ]]
 function Workspace:mapToGraph(x, y)
-  --print("x to graph: " .. x .. " y to graph: " .. y)
   return math.floor( x / self.cellsize) * self.cellsize, math.floor( y / self.cellsize) * self.cellsize
 end
 
@@ -118,7 +105,6 @@ end
 --[[
   checks to keyboard and makes appropriate changes to variables
 ]]
-
 function Workspace:checkKeyboard()
   if love.keyboard.isDown('up') then
     self.camera:move(0, -1)
@@ -137,7 +123,6 @@ end
 --[[
   checks the mouse and makes appropriate changes to variables
 ]]
-
 function Workspace:checkMouse()
   local mx, my = love.mouse.getPosition()
   mx, my = self.camera:mapToWorld(mx, my)
@@ -160,6 +145,12 @@ function Workspace:checkMouse()
   end
 end
 
+--[[
+  function that is called when mouse click is first detected.
+  checks if there is a tile already occupying space, if not a new tile is created at the location of the cursor.
+  x, location of mouse click on x-axis
+  y, location of mouse click on y-axis
+]]
 function Workspace:mouseEnter(x, y)
   self.selectedTile = self:checkTiles(x, y)
   if self.selectedTile == nil then
@@ -167,6 +158,13 @@ function Workspace:mouseEnter(x, y)
   end
 end
 
+--[[
+  function called when mouse is exiting from mouse click. 
+
+  checks if there is a tile at current location, if there is no tile currently at space, then there 
+  x, location of mouse exit on x-axis
+  y, location of mouse exit on y-axis
+]]
 function Workspace:mouseExit(x, y)
   if self.selectedTile ~= nil then
     local testTile = self:checkTiles(x, y)
@@ -177,6 +175,11 @@ function Workspace:mouseExit(x, y)
   end
 end
 
+--[[
+  function called while mouse button is down.
+  x, location of mouse during drag on x-axis
+  y, location of mouse during drag on y-axis
+]]
 function Workspace:mouseDrag(x, y)
   if self.selectedTile ~= nil then
     self.selectedTile:setPosition(self.squareCursor.x, self.squareCursor.y)
@@ -191,6 +194,9 @@ function Workspace:update(dt)
   self:checkMouse()
 end
 
+--[[
+  function for dealing with with movement of the mouse's wheel
+]]
 function Workspace:wheelmoved(x, y)
   if y < 0 then
     self.camera:setScale(1.1)
